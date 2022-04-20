@@ -45,10 +45,9 @@ runApp(host="0.0.0.0", port=strtoi(Sys.getenv("PORT")))
 5. It's also generally a good idea to add a .cfignore file with files that cloud.gov should skip. For example:
 ```
 *.Rproj
-documentation.md
 ```
 
-6. Logging into cloud.gov on Windows
+6. Log into cloud.gov on Windows
   - In the Windows command line, log into cloud.gov with the command (Note: you may need to replace the cf with cf7 or cf8 depending on your CLI version):
     - `cf login -a api.fr.cloud.gov  --sso`
   - Go to https://login.fr.cloud.gov/passcode, log in, and copy the passcode
