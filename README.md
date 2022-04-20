@@ -1,6 +1,6 @@
 # How to deploy R Shiny apps to cloud.gov
 
-1. Install the Cloud Foundry CLI (Command Line Interface) and log into cloud.gov with cloud foundry
+1. Install the Cloud Foundry CLI (Command Line Interface):
   - [Cloud.gov setup documentation](https://cloud.gov/docs/getting-started/setup/)
 
 2. Add a manifest.yml file to your project. This is an example for an app named "shiny-app-test" which uses 256 MB of memory:
