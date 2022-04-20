@@ -5,6 +5,7 @@
 
 2. Add a manifest.yml file to your project. This is an example for an app named "shiny-app-test" which uses 256 MB of memory:
 ```
+---
 applications:
 - name: shiny-app-test
   memory: 256M

@@ -1,0 +1,9 @@
+packages:
+- cran_mirror: https://raw.githubusercontent.com/USEPA/cflinuxfs3-CRAN/master/cflinuxfs3/
+  num_threads: 2
+  packages:
+    - name: shinyjs
+    - name: ggpubr
+    - name: readr
+    - name: dplyr
+    - name: shinyWidgets
