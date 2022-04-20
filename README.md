@@ -2,6 +2,7 @@
 
 1. Install the Cloud Foundry CLI (Command Line Interface) and log into cloud.gov with cloud foundry
   - [Cloud.gov setup documentation](https://cloud.gov/docs/getting-started/setup/)
+
 2. Add a manifest.yml file to your project. This is an example for an app named "shiny-app-test" which uses 256 MB of memory:
 ```
 applications:
@@ -15,6 +16,7 @@ applications:
   command: R -f shiny.R
 ```
 Note that cloud.gov charges for memory use, so it's best to find the level that your app needs without making it too high.
+
 3. Add an r.yml file that lists all of the packages your app needs (typically, anything called in a library command). For example, with an app that used shinyjs, ggpubr, readr, dplyr, and shinyWidgets, the r.yml would look like:
 ```
 packages:
@@ -27,22 +29,25 @@ packages:
     - name: dplyr
     - name: shinyWidgets
 ```
-    - Note: cloud.gov already has a set of common R dependencies (shiny, forecast, Rserve, and plumber), including all of their dependencies. You do not need to include those in your r.yml. You can view a full list of what's already available by running:
+Note: cloud.gov already has a set of common R dependencies (shiny, forecast, Rserve, and plumber), including all of their dependencies. You do not need to include those in your r.yml. You can view a full list of what's already available by running:
 ```
 library('miniCRAN')
 pkgsInBuildpack <- sort(pkgDep(c("shiny", "forecast", "Rserve", "plumber"), suggests = TRUE, enhances = FALSE))
 pkgsInBuildpack
 ```
+
 4. Add a shiny.R file with settings for cloud.gov:
 ```
 library(shiny)
 runApp(host="0.0.0.0", port=strtoi(Sys.getenv("PORT")))
 ```
+
 5. It's also generally a good idea to add a .cfignore file with files that cloud.gov should skip. For example:
 ```
 *.Rproj
 documentation.md
 ```
+
 6. Logging into cloud.gov on Windows
   - In the Windows command line, log into cloud.gov with the command (Note: you may need to replace the cf with cf7 or cf8 depending on your CLI version):
     - `cf login -a api.fr.cloud.gov  --sso`
@@ -52,6 +57,7 @@ documentation.md
 ```
 cf push
 ```
+
 ## Missing packages
 If a package you need is missing, use the [issues here to request it](https://github.com/USEPA/cflinuxfs3-CRAN)
 
