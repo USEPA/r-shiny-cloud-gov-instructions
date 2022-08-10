@@ -57,9 +57,9 @@ runApp(host="0.0.0.0", port=strtoi(Sys.getenv("PORT")))
 ```
 cf push
 ```
-
+8. For EPA Projects, you will most likely need to use the [One EPA Template for R](https://github.com/USEPA/webcms/blob/main/utilities/r/OneEPA_template.R).
 ## Missing packages
-If a package you need is missing, use the [issues here to request it](https://github.com/USEPA/cflinuxfs3-CRAN)
+If a package you need is missing, use the [issues here to request it](https://github.com/USEPA/cflinuxfs3-CRAN/issues)
 
 ## Additional note about R Shiny apps with GIS/geospatial dependencies
 Certain R packages (such as sp, sf, rgdal, or rgeos) depend on libraries not available within the standard cloud.gov buildpack. EPA has a [repo to provide those libraries](https://github.com/USEPA/generate-r-cloud-gov-libraries).
