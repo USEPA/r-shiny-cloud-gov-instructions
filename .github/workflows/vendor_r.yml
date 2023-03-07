@@ -16,10 +16,10 @@ jobs:
       run: |
         sed -n -e 's/^.*- name: //p' r.yml | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs= >> $GITHUB_ENV
 
-    - run: ls
-
     - name: Download R packages
-      run: RScript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
+      run: |
+        scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
+      shell: RScript
 
     - name: Write Descriptions
       run: write_descriptions.sh vendor_r/src/contrib 
