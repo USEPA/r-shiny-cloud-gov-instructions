@@ -13,7 +13,8 @@ jobs:
         r-version: '4.2.2' # The R version to download (if necessary) and use.
 
     - name: Get R dependencies
-      run: sed -n -e 's/^.*- name: //p' r.yml | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs = >> $GITHUB_ENV
+      run: |
+        sed -n -e 's/^.*- name: //p' r.yml | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs = >> $GITHUB_ENV
 
     - name: Download R packages
       run: RScript scripts/download_packages.R vendor_r/src/contrib $GITHUB_ENV.packs
