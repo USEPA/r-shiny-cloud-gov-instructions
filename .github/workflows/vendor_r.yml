@@ -29,7 +29,9 @@ jobs:
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
     - name: Write Descriptions
-      run: .github/scripts/write_descriptions.sh vendor_r/src/contrib 
+      run: |
+        chmod +x .github/scripts/write_descriptions.sh
+        .github/scripts/write_descriptions.sh vendor_r/src/contrib 
 
     - name: Commit & Push
       if: ${{ success() }}
