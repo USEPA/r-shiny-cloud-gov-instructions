@@ -16,6 +16,9 @@ jobs:
       run: |
         sed -n -e 's/^.*- name: //p' r.yml | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs = >> $GITHUB_ENV
 
+    - name: Test R is installed
+      run: Rscript -e 'print("hello")'
+
     - name: Download R packages
       run: RScript ./scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
