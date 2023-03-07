@@ -16,7 +16,7 @@ jobs:
 
     - name: Download R packages
       run: |
-        RScript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
+        ./RScript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
     - name: Write Descriptions
       run: write_descriptions.sh vendor_r/src/contrib 
