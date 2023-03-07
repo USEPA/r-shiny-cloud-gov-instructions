@@ -14,13 +14,12 @@ jobs:
 
     - name: Get R dependencies
       run: |
-        sed -n -e 's/^.*- name: //p' r.yml | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs = >> $GITHUB_ENV
+        sed -n -e 's/^.*- name: //p' r.yml | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs= >> $GITHUB_ENV
 
-    - name: Test R is installed
-      run: Rscript -e 'print("hello")'
+    - run: ls
 
     - name: Download R packages
-      run: RScript ./scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
+      run: RScript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
     - name: Write Descriptions
       run: write_descriptions.sh vendor_r/src/contrib 
