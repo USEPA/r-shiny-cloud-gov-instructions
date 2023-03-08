@@ -42,7 +42,13 @@ get_packages <- function(packs) {
                         which = c("Depends", "Imports"), recursive = TRUE
                 )
         )
-        packages <- union(packs, packages)
+        message("...but need to skip those that already exist in the cloud.gov buildpack")
+        packages_in_buildpack <- unlist(
+                tools::package_dependencies(c("shiny", "forecast", "Rserve", "plumber"), available.packages(),
+                        which = c("Depends", "Imports"), recursive = TRUE
+                )
+        )
+        packages <- setdiff(union(packs, packages), packages_in_buildpack)
         packages
 }
 
