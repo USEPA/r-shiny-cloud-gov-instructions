@@ -33,7 +33,7 @@ jobs:
     - name: Write Descriptions
       run: |
         mkdir temp
-        TEMPDIR=/temp
+        TMPDIR=/temp
         chmod +x .github/scripts/write_descriptions.sh
         .github/scripts/write_descriptions.sh vendor_r/src/contrib 
 
