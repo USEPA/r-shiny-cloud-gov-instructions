@@ -1,16 +1,20 @@
 packages:
 - packages:
-    - name: golem
-    - name: thinkr
-    - name: shinycssloaders
-    - name: dplyr
-    - name: xlsx
-    - name: readxl
+    - name: spsurvey
+    - name: janitor
     - name: DT
-    - name: bootstrap
-    - name: plotly
+    - name: zip
+    - name: foreign
+    - name: sf
+    - name: sp
+    - name: leaflet
+    - name: mapview
+    - name: ggspatial
+    - name: shinythemes
+    - name: shinybusy
+    - name: spsurvey
+    - name: shinycssloaders
+    - name: shinyhelper
+    - name: shinyBS
+    - name: dplyr
     - name: tidyr
-    - name: ggpubr
-    - name: cowplot
-    - name: textshape
-    - name: boot

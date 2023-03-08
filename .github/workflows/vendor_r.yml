@@ -3,14 +3,14 @@ on:
 
 jobs:
   download_and_vendor_dependencies:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
   
     steps:
     - uses: actions/checkout@v3
 
-    # - name: Delete existing vendor_r
-    #   run: |
-    #     if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
+    - name: Delete existing vendor_r
+      run: |
+        if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
 
     - name: Setup R
       uses: r-lib/actions/setup-r@v2
