@@ -28,12 +28,12 @@ jobs:
       run: |
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
-    - run: ls
+    - run: ls -r
 
     - name: Write Descriptions
       run: |
         chmod +x .github/scripts/write_descriptions.sh
-        .github/scripts/write_descriptions.sh ../../vendor_r/src/contrib 
+        .github/scripts/write_descriptions.sh vendor_r/src/contrib 
 
     - name: Commit & Push
       if: ${{ success() }}
