@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Check if a temp direcorty is defined in the environment
+# Check if a temp directory is defined in the environment
 if [[ -z $TMPDIR ]]
 then
 	echo "Did not find a temp directory (TMPDIR environment variable)"

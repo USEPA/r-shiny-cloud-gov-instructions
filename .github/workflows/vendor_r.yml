@@ -32,11 +32,12 @@ jobs:
 
     - name: Write Descriptions
       run: |
+        mkdir temp
+        TEMPDIR=/temp
         chmod +x .github/scripts/write_descriptions.sh
         .github/scripts/write_descriptions.sh vendor_r/src/contrib 
 
     - name: Commit & Push
-      if: ${{ success() }}
       run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
