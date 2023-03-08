@@ -26,7 +26,7 @@ jobs:
 
     - name: Download R packages
       run: |
-        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
+        Rscript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
     - run: ls -R
 
@@ -34,8 +34,8 @@ jobs:
       run: |
         mkdir temp
         export TMPDIR=temp
-        chmod +x .github/scripts/write_descriptions.sh
-        .github/scripts/write_descriptions.sh vendor_r/src/contrib/
+        chmod +x scripts/write_descriptions.sh
+        scripts/write_descriptions.sh vendor_r/src/contrib/
 
     - name: Commit & Push
       if: ${{ success() }}
