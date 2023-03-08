@@ -28,7 +28,7 @@ jobs:
       run: |
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
-    - run: ls -r
+    - run: ls -R
 
     - name: Write Descriptions
       run: |
