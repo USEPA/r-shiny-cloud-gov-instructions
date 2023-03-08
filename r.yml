@@ -1,9 +1,16 @@
 packages:
-- cran_mirror: https://raw.githubusercontent.com/USEPA/cflinuxfs3-CRAN/master/cflinuxfs3/
-  num_threads: 2
-  packages:
-    - name: shinyjs
-    - name: ggpubr
-    - name: readr
+- packages:
+    - name: golem
+    - name: thinkr
+    - name: shinycssloaders
     - name: dplyr
-    - name: shinyWidgets
+    - name: xlsx
+    - name: readxl
+    - name: DT
+    - name: bootstrap
+    - name: plotly
+    - name: tidyr
+    - name: ggpubr
+    - name: cowplot
+    - name: textshape
+    - name: boot
