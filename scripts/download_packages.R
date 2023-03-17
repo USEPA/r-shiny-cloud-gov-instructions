@@ -62,7 +62,7 @@ download.packages(packages, destdir = args[1])
 
 message("Completed downloading packages")
 
-
+library(rdrr)
 write_PACKAGES(dir = args[1], fields = NULL,
                type = c("source"),
                verbose = FALSE, unpacked = FALSE, subdirs = FALSE,
