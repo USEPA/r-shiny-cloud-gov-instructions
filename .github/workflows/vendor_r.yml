@@ -18,7 +18,9 @@ jobs:
     - name: Download dependency
       uses: r-lib/actions/setup-r-dependencies@v2
       with:
-        packages: stringr
+        packages: |
+          stringr
+          rdrr
 
     - name: List R dependencies
       run: |
