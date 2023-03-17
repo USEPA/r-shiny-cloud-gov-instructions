@@ -615,6 +615,16 @@ License: GPL-3
 MD5sum: ad57053caeb0aa7b862893d57a17e115
 NeedsCompilation: no
 
+Package: shinyjs
+Version: 2.1.0
+Depends: R (>= 3.1.0)
+Imports: digest (>= 0.6.8), jsonlite, shiny (>= 1.0.0)
+Suggests: htmltools (>= 0.2.9), knitr (>= 1.7), rmarkdown, shinyAce,
+        shinydisconnect, testthat (>= 0.9.1)
+License: MIT + file LICENSE
+MD5sum: 292d17d7cc6119eb2b173a0764550468
+NeedsCompilation: no
+
 Package: shinythemes
 Version: 1.2.0
 Depends: R (>= 3.0.0)
