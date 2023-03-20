@@ -30,10 +30,6 @@ options(HTTPUserAgent = sprintf(
         )
 ))
 
-# Set the repo to the binary distro url
-message("Setting the repository url")
-options(repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
-
 # Get packages function to get the packages and dependencies
 get_packages <- function(packs) {
         message("Getting the package dependencies")
@@ -58,12 +54,14 @@ packages <- get_packages(input_packs)
 
 # Download the packages from the repository
 message(paste("Downloading the packages and dependencies to", args[1], sep = " "))
-download.packages(packages, destdir = args[1])
+download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
+download.packages(c("sf"), destdir = args[1], repos = "https://raw.githubusercontent.com/USEPA/cflinuxfs3-CRAN/master/cflinuxfs3/")
+
 
 message("Completed downloading packages")
 
 library(tools)
-write_PACKAGES(dir = args[1], fields = NULL,
+tools::write_PACKAGES(dir = args[1], fields = NULL,
                type = c("source"),
                verbose = FALSE, unpacked = FALSE, subdirs = FALSE,
                latestOnly = TRUE, addFiles = FALSE, rds_compress = "xz",
