@@ -27,7 +27,7 @@ jobs:
 
     - name: Download R packages
       run: |
-        Rscript .github/download_packages.R vendor_r/src/contrib ${{ env.packs }}
+        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
 
     - name: Commit & Push
       if: ${{ success() }}
