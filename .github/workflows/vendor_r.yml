@@ -32,7 +32,7 @@ jobs:
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
     - name: Download sf
-      if: env.has_sf
+      if: ${{ env.has_sf }}
       uses: r-lib/actions/setup-r-dependencies@v2
       with:
         packages: |
@@ -40,7 +40,7 @@ jobs:
 
     - name: Write package descriptions
       run: |
-        Rscript .github/scripts/download_packages.R vendor_r/src/contrib
+        Rscript .github/scripts/write_descriptions.R vendor_r/src/contrib
 
     - name: Commit & Push
       if: ${{ success() }}

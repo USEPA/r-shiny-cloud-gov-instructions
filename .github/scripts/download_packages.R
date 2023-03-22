@@ -17,19 +17,6 @@ input_packs <- unlist(str_split(args[2], ","))
 
 # message(input_packs)
 
-# Sets the default user agent for binary package downloads
-# write("Setting the user agent for binary package downloads", stdout())
-# options(HTTPUserAgent = sprintf(
-#         "R/%s R (%s)",
-#         "4.2.2",
-#         paste(
-#                 "4.2.2",
-#                 "x86_64-pc-linux-gnu",
-#                 "x86_64",
-#                 "linux-gnu"
-#         )
-# ))
-
 options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), 
         paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
 
@@ -61,8 +48,7 @@ packages <- get_packages(input_packs)
 if ("sf"  %in% packages) {
         download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
         message("has_sf=TRUE")
-}
-else {
+} else {
         download.packages(packages, destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
         message("has_sf=FALSE")
 }
