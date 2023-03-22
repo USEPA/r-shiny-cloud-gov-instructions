@@ -14,6 +14,8 @@ jobs:
 
     - name: Setup R
       uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: 4.2.2
 
     - name: Download dependency
       uses: r-lib/actions/setup-r-dependencies@v2
@@ -27,7 +29,18 @@ jobs:
 
     - name: Download R packages
       run: |
-        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
+        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
+
+    - name: Download sf
+      if: env.has_sf
+      uses: r-lib/actions/setup-r-dependencies@v2
+      with:
+        packages: |
+          sf
+
+    - name: Write package descriptions
+      run: |
+        Rscript .github/scripts/download_packages.R vendor_r/src/contrib
 
     - name: Commit & Push
       if: ${{ success() }}

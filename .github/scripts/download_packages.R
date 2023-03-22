@@ -15,10 +15,10 @@ if (!dir.exists(args[1])) {
 # Split the packages into a character list
 input_packs <- unlist(str_split(args[2], ","))
 
-message(input_packs)
+# message(input_packs)
 
 # Sets the default user agent for binary package downloads
-write("Setting the user agent for binary package downloads", stdout())
+# write("Setting the user agent for binary package downloads", stdout())
 # options(HTTPUserAgent = sprintf(
 #         "R/%s R (%s)",
 #         "4.2.2",
@@ -35,13 +35,13 @@ options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(),
 
 # Get packages function to get the packages and dependencies
 get_packages <- function(packs) {
-        message("Getting the package dependencies")
+        # message("Getting the package dependencies")
         packages <- unlist(
                 tools::package_dependencies(packs, available.packages(),
                         which = c("Depends", "Imports"), recursive = TRUE
                 )
         )
-        message("...but need to skip those that already exist in the cloud.gov buildpack")
+        # message("...but need to skip those that already exist in the cloud.gov buildpack")
         buildpack_includes <- c("shiny", "forecast", "Rserve", "plumber")
         packages_in_buildpack <- unlist(
                 tools::package_dependencies(buildpack_includes, available.packages(),
@@ -56,15 +56,15 @@ get_packages <- function(packs) {
 packages <- get_packages(input_packs)
 
 # Download the packages from the repository
-message(paste("Downloading the packages and dependencies to", args[1], sep = " "))
-download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
-download.packages(c("sf"), destdir = args[1], repos = "https://raw.githubusercontent.com/USEPA/cflinuxfs3-CRAN/master/cflinuxfs3/")
+# message(paste("Downloading the packages and dependencies to", args[1], sep = " "))
 
-message("Completed downloading packages")
+if ("sf"  %in% packages) {
+        download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
+        message("has_sf=TRUE")
+}
+else {
+        download.packages(packages, destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
+        message("has_sf=FALSE")
+}
 
-library(tools)
-tools::write_PACKAGES(dir = args[1], fields = NULL,
-               type = c("source"),
-               verbose = FALSE, unpacked = FALSE, subdirs = FALSE,
-               latestOnly = TRUE, addFiles = FALSE, rds_compress = "xz",
-               validate = FALSE)
+# message("Completed downloading packages")
