@@ -8,7 +8,7 @@ if (length(args) == 0) {
 
 # Create the directory
 if (!dir.exists(args[1])) {
-        write("Creating the directory", stdout())
+        # message("Creating the directory")
         dir.create(args[1], recursive = TRUE)
 }
 
@@ -47,10 +47,10 @@ packages <- get_packages(input_packs)
 
 if ("sf"  %in% packages) {
         download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
-        message("has_sf=TRUE")
+        write("has_sf=TRUE", stdout())
 } else {
         download.packages(packages, destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
-        message("has_sf=FALSE")
+        write("has_sf=FALSE", stdout())
 }
 
 # message("Completed downloading packages")
