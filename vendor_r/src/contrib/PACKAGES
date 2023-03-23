@@ -99,18 +99,18 @@ MD5sum: e44e45781a86b85f8f1a2a73167b68de
 NeedsCompilation: yes
 
 Package: dplyr
-Version: 1.1.0
-Depends: R (>= 3.4.0)
+Version: 1.1.1
+Depends: R (>= 3.5.0)
 Imports: cli (>= 3.4.0), generics, glue (>= 1.3.2), lifecycle (>=
         1.0.3), magrittr (>= 1.5), methods, pillar (>= 1.5.1), R6,
-        rlang (>= 1.0.6), tibble (>= 2.1.3), tidyselect (>= 1.2.0),
-        utils, vctrs (>= 0.5.2)
+        rlang (>= 1.1.0), tibble (>= 3.2.0), tidyselect (>= 1.2.0),
+        utils, vctrs (>= 0.6.0)
 Suggests: bench, broom, callr, covr, DBI, dbplyr (>= 2.2.1), ggplot2,
         knitr, Lahman, lobstr, microbenchmark, nycflights13, purrr,
         rmarkdown, RMySQL, RPostgreSQL, RSQLite, stringi (>= 1.7.6),
         testthat (>= 3.1.5), tidyr (>= 1.3.0), withr
 License: MIT + file LICENSE
-MD5sum: 8a99f663ea10fdb5b328975738b2466d
+MD5sum: 981f642c1e9f9ec0e3b600dc21675923
 NeedsCompilation: yes
 
 Package: DT
@@ -566,7 +566,7 @@ MD5sum: 28d602c715d4e4681eb2dcd0246c5050
 NeedsCompilation: no
 
 Package: sf
-Version: 1.0-9
+Version: 1.0-12
 Depends: methods, R (>= 3.3.0)
 Imports: classInt (>= 0.4-1), DBI (>= 0.8), graphics, grDevices, grid,
         magrittr, Rcpp (>= 0.12.18), s2 (>= 1.1.0), stats, tools, units
@@ -577,11 +577,11 @@ Suggests: blob, covr, dplyr (>= 0.8-3), ggplot2, knitr, lwgeom (>=
         pillar, pool, raster, rlang, rmarkdown, RPostgres (>= 1.1.0),
         RPostgreSQL, RSQLite, sp (>= 1.2-4), spatstat (>= 2.0-1),
         spatstat.geom, spatstat.random, spatstat.linnet,
-        spatstat.utils, stars (>= 0.2-0), terra, testthat, tibble (>=
-        1.4.1), tidyr (>= 1.2.0), tidyselect (>= 1.0.0), tmap (>= 2.0),
-        vctrs, wk
+        spatstat.utils, stars (>= 0.2-0), terra, testthat (>= 3.0.0),
+        tibble (>= 1.4.1), tidyr (>= 1.2.0), tidyselect (>= 1.0.0),
+        tmap (>= 2.0), vctrs, wk
 License: GPL-2 | MIT + file LICENSE
-MD5sum: 47a663889a57c70ace95fd5c43275eb3
+MD5sum: c2bff2046faa3266c50ae6414ba8702a
 NeedsCompilation: yes
 
 Package: shinyBS
