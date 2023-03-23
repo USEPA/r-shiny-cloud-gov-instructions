@@ -26,7 +26,7 @@ jobs:
 
     - name: List R dependencies
       run: |
-        sed -n -e 's/^.*- name: //p' r.yml | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs= >> $GITHUB_ENV
+        sed -n -e 's/^.*- name: //p' r.yml | tr -d '\015' | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs= >> $GITHUB_ENV
 
     - name: Download R packages
       run: |
