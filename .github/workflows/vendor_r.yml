@@ -23,8 +23,8 @@ jobs:
       with:
         packages: |
           stringr
-          sf
           devtools
+          sf
 
     - name: List R dependencies
       run: |
@@ -33,7 +33,8 @@ jobs:
     - name: Download R packages
       run: |
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
-        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
+        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} 
+# >> $GITHUB_ENV
 
     # - name: Install and Build sf
     #   if: ${{ env.has_sf }}
@@ -44,19 +45,19 @@ jobs:
       #   packages: |
       #     sf
 
-    - name: Run lib_tar.sh to extract each of the libraries needed by sf
-      if: ${{ env.has_sf }}
-      run: |
-        if [ -d "r-lib" ]; then rm -fr r-lib; fi
-        mkdir r-lib
-        chmod +x .github/scripts/lib_tar.sh
-        for L in $LIBS
-        do
-          find / -iname $L 2>/dev/null | xargs -I {} .github/scripts/lib_tar.sh {}
-        done
-        git add r-lib
-      env:
-        LIBS: libgdal.so.26 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so libudunits2.so.0 proj.db
+    # - name: Run lib_tar.sh to extract each of the libraries needed by sf
+    #   if: ${{ env.has_sf }}
+    #   run: |
+    #     if [ -d "r-lib" ]; then rm -fr r-lib; fi
+    #     mkdir r-lib
+    #     chmod +x .github/scripts/lib_tar.sh
+    #     for L in $LIBS
+    #     do
+    #       find / -iname $L 2>/dev/null | xargs -I {} .github/scripts/lib_tar.sh {}
+    #     done
+    #     git add r-lib
+    #   env:
+    #     LIBS: libgdal.so.26 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so libudunits2.so.0 proj.db
 
     # - name: Write package descriptions
     #   run: |

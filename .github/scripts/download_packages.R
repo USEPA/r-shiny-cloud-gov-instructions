@@ -53,7 +53,9 @@ if ("sf"  %in% packages) {
         dir.create("junktemp")
         download.packages(c("sf"), destdir = "junktemp", repos = repoUrl)
         sf_pkg <- list.files("junktemp")[1]
+        message("About to build sf")
         devtools::build(pkg = paste("junktemp", sf_pkg, sep = "/"), path = args[1], binary = TRUE)
+        message("sf built")
         unlink("junktemp", recursive = TRUE)
         write("has_sf=TRUE", stdout())
 } else {
