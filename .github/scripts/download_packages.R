@@ -52,9 +52,8 @@ download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = repoUrl
 if ("sf"  %in% packages) {
         dir.create("junktemp")
         download.packages(c("sf"), destdir = "junktemp", repos = repoUrl)
-        pkg_files <- list.files(args[1])
         sf_pkg <- list.files("junktemp")[1]
-        devtools::build(pkg = args[1] / sf_pkg, binary = TRUE)
+        devtools::build(pkg = paste(args[1], sf_pkg, sep = "/"), binary = TRUE)
         unlink("junktemp", recursive = TRUE)
         write("has_sf=TRUE", stdout())
 } else {
