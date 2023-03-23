@@ -33,11 +33,11 @@ jobs:
     - name: Download R packages
       run: |
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
-        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_OUTPUT
+        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
       id: download_packages
 
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
-      if: ${{ steps.download_packages.outputs.has_sf }}
+      if: ${{ process.env.STATE_has_sf }}
       run: |
         if [ -d "r-lib" ]; then rm -fr r-lib; fi
         mkdir r-lib

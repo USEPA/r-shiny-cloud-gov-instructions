@@ -55,9 +55,9 @@ if ("sf"  %in% packages) {
         sf_pkg <- list.files("junktemp")[1]
         devtools::build(pkg = paste("junktemp", sf_pkg, sep = "/"), path = args[1], binary = TRUE)
         unlink("junktemp", recursive = TRUE)
-        write("::set-output name=has_sf=::TRUE", stdout())
+        write("has_sf=TRUE", file = process.env.GITHUB_STATE)
 } else {
-        write("::set-output name=has_sf=::FALSE", stdout())
+        write("has_sf=FALSE", file = process.env.GITHUB_STATE)
 }
 
 # message("Completed downloading packages")
