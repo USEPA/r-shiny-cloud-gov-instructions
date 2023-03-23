@@ -1,6 +1,8 @@
 library(stringr)
 args <- commandArgs(trailingOnly = TRUE)
 
+repoUrl = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"
+
 # Test if a package destination directory was passed as an argument
 if (length(args) == 0) {
   stop("Usage: R -f download_packages.R destination_directory package1,package2,package3", call. = FALSE)
@@ -45,17 +47,15 @@ packages <- get_packages(input_packs)
 # Download the packages from the repository
 # message(paste("Downloading the packages and dependencies to", args[1], sep = " "))
 
-download.packages(packages, destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
+download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = repoUrl)
 
 if ("sf"  %in% packages) {
+        dir.create("junktemp")
+        download.packages(c("sf"), destdir = "junktemp", repos = repoUrl)
         pkg_files <- list.files(args[1])
-        sf_pkg = ""
-        for (p in pkg_files) {
-                if (startsWith(p, "sf_")) {
-                        sf_pkg = p
-                }
-        }
+        sf_pkg <- list.files("junktemp")[1]
         devtools::build(pkg = args[1] / sf_pkg, binary = TRUE)
+        unlink("junktemp", recursive = TRUE)
         write("has_sf=TRUE", stdout())
 } else {
         write("has_sf=FALSE", stdout())
