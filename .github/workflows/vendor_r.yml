@@ -36,8 +36,12 @@ jobs:
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
       id: download_packages
 
+    - name: Save state to variable
+      run |
+        echo "has_sf=${{ process.env.STATE_has_sf }}" >> GITHUB_ENV
+
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
-      if: ${{ process.env.STATE_has_sf }}
+      if: ${{ env.has_sf }}
       run: |
         if [ -d "r-lib" ]; then rm -fr r-lib; fi
         mkdir r-lib
