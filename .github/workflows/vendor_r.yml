@@ -18,11 +18,13 @@ jobs:
       with:
         r-version: 4.2.2
 
-    - name: Download dependency
+    - name: Download dependencies
       uses: r-lib/actions/setup-r-dependencies@v2
       with:
         packages: |
           stringr
+          sf
+          devtools
 
     - name: List R dependencies
       run: |
@@ -31,14 +33,16 @@ jobs:
     - name: Download R packages
       run: |
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
-        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
+        R -f .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
-    - name: Download sf
-      if: ${{ env.has_sf }}
-      uses: r-lib/actions/setup-r-dependencies@v2
-      with:
-        packages: |
-          sf
+    # - name: Install and Build sf
+    #   if: ${{ env.has_sf }}
+    #   run: |
+    #     R CMD INSTALL -l vendor_r/src/contrib --build sf
+      # uses: r-lib/actions/setup-r-dependencies@v2
+      # with:
+      #   packages: |
+      #     sf
 
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
       if: ${{ env.has_sf }}
@@ -56,7 +60,7 @@ jobs:
 
     - name: Write package descriptions
       run: |
-        Rscript .github/scripts/write_descriptions.R vendor_r/src/contrib
+        R -f .github/scripts/write_descriptions.R vendor_r/src/contrib
 
     - name: Commit & Push
       if: ${{ success() }}

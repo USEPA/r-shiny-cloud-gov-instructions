@@ -45,11 +45,19 @@ packages <- get_packages(input_packs)
 # Download the packages from the repository
 # message(paste("Downloading the packages and dependencies to", args[1], sep = " "))
 
+download.packages(packages, destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
+
 if ("sf"  %in% packages) {
-        download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
+        pkg_files <- list.files(args[1])
+        sf_pkg = ""
+        for (p in pkg_files) {
+                if (startsWith(p, "sf_")) {
+                        sf_pkg = p
+                }
+        }
+        devtools::build(pkg = args[1] / sf_pkg, binary = TRUE)
         write("has_sf=TRUE", stdout())
 } else {
-        download.packages(packages, destdir = args[1], repos = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest")
         write("has_sf=FALSE", stdout())
 }
 
