@@ -58,9 +58,9 @@ jobs:
       env:
         LIBS: libgdal.so.26 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so libudunits2.so.0 proj.db
 
-    - name: Write package descriptions
-      run: |
-        Rscript .github/scripts/write_descriptions.R vendor_r/src/contrib
+    # - name: Write package descriptions
+    #   run: |
+    #     Rscript .github/scripts/write_descriptions.R vendor_r/src/contrib
 
     - name: Commit & Push
       if: ${{ success() }}
