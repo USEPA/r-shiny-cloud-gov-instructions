@@ -50,14 +50,16 @@ packages <- get_packages(input_packs)
 download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = repoUrl)
 
 if ("sf"  %in% packages) {
+        write("has_sf=TRUE", stdout())
+        # write("has_sf=TRUE", file = process.env.GITHUB_STATE)
         dir.create("junktemp")
         download.packages(c("sf"), destdir = "junktemp", repos = repoUrl)
         sf_pkg <- list.files("junktemp")[1]
         devtools::build(pkg = paste("junktemp", sf_pkg, sep = "/"), path = args[1], binary = TRUE)
         unlink("junktemp", recursive = TRUE)
-        write("has_sf=TRUE", file = process.env.GITHUB_STATE)
 } else {
-        write("has_sf=FALSE", file = process.env.GITHUB_STATE)
+        write("has_sf=FALSE", stdout())
+        # write("has_sf=FALSE", file = process.env.GITHUB_STATE)
 }
 
 # message("Completed downloading packages")
