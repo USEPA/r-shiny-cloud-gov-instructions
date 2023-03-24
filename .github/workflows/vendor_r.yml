@@ -44,7 +44,7 @@ jobs:
     - name: Build sf package binary
       if: ${{ env.has_sf }}
       run: |
-        Rscript build_sf.R 
+        Rscript .github/scripts/build_sf.R 
 
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
       if: ${{ env.has_sf }}
@@ -62,7 +62,7 @@ jobs:
 
     - name: Write package descriptions
       run: |
-        Rscript write_descriptions.R 
+        Rscript .github/scripts/write_descriptions.R 
 
     - name: Commit & Push
       if: ${{ success() }}
