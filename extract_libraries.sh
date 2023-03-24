@@ -5,3 +5,5 @@ if [ -d "/home/vcap" ]; then
         done;
     fi;
 fi;
+
+export GDAL_DATA=/home/vcap/deps/0/r/lib
