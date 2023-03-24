@@ -20,7 +20,11 @@ TEMP_DIR=temp_lib
 
 mkdir $TEMP_DIR
 
-cp -v $1 $TEMP_DIR
+if test -d "$1"; then
+    cp -vr $1 $TEMP_DIR
+else
+    cp -v $1 $TEMP_DIR
+fi
 
 if [[ "$FILE" == *".so"* ]]; then
     ldd $1 | grep "=> /" | awk '{print $3}' | xargs -I '{}' cp -v '{}' $TEMP_DIR
