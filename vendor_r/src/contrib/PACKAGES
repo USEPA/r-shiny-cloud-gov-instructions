@@ -473,7 +473,7 @@ LinkingTo: cli
 Suggests: covr, dplyr (>= 0.7.8), httr, knitr, lubridate, rmarkdown,
         testthat (>= 3.0.0), tibble, tidyselect
 License: MIT + file LICENSE
-MD5sum: dad1167654c8e89eaf34089bd8f57475
+MD5sum: 4df95d0d7aa186ab410840e7917d3f86
 NeedsCompilation: yes
 
 Package: raster
@@ -581,7 +581,7 @@ Suggests: blob, covr, dplyr (>= 0.8-3), ggplot2, knitr, lwgeom (>=
         tibble (>= 1.4.1), tidyr (>= 1.2.0), tidyselect (>= 1.0.0),
         tmap (>= 2.0), vctrs, wk
 License: GPL-2 | MIT + file LICENSE
-MD5sum: 03ef40b96bd3679bf6dd83725dc56ff5
+MD5sum: 3d4aa3ded3bf7b4ed11320858517d17c
 NeedsCompilation: yes
 
 Package: shinyBS
