@@ -63,7 +63,7 @@ jobs:
         cp .github/scripts/extract_libraries.sh extract_libraries.sh
         git add extract_libraries.sh
       env:
-        LIBS: libgdal.so.20 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so.12 libudunits2.so.0 proj.db gcs.csv
+        LIBS: libgdal.so.20 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so.12 libudunits2.so.0 proj.db gdal-data
 
     - name: Write package descriptions
       run: |
