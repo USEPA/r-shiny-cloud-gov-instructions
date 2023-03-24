@@ -23,8 +23,6 @@ jobs:
       with:
         packages: |
           stringr
-          devtools
-          sf
 
     - name: List R dependencies
       run: |
@@ -34,11 +32,19 @@ jobs:
       run: |
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
-      id: download_packages
 
-    # - name: Save state to variable
-    #   run |
-    #     echo "has_sf=${{ process.env.STATE_has_sf }}" >> GITHUB_ENV
+    - name: Download dependencies for sf
+      if: ${{ env.has_sf }}
+      uses: r-lib/actions/setup-r-dependencies@v2
+      with:
+        packages: |
+          devtools
+          sf
+
+    - name: Build sf package binary
+      if: ${{ env.has_sf }}
+      run: |
+        Rscript build_sf.R 
 
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
       if: ${{ env.has_sf }}
@@ -53,6 +59,10 @@ jobs:
         git add r-lib
       env:
         LIBS: libgdal.so.26 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so libudunits2.so.0 proj.db
+
+    - name: Write package descriptions
+      run: |
+        Rscript write_descriptions.R 
 
     - name: Commit & Push
       if: ${{ success() }}
