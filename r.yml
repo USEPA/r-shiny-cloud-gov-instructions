@@ -18,4 +18,5 @@ packages:
     - name: shinyBS
     - name: dplyr
     - name: tidyr
+    - name: bslib
     - name: shinyjs
