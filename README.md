@@ -61,8 +61,5 @@ cf push
 ## Missing packages
 If a package you need is missing, use the [issues here to request it](https://github.com/USEPA/cflinuxfs3-CRAN/issues)
 
-## Additional note about R Shiny apps with GIS/geospatial dependencies
-Certain R packages (such as sp, sf, rgdal, or rgeos) depend on libraries not available within the standard cloud.gov buildpack. EPA has a [repo to provide those libraries](https://github.com/USEPA/generate-r-cloud-gov-libraries).
-
 # Disclaimer
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use.  EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA.  The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
