@@ -44,7 +44,10 @@ jobs:
     - name: Build sf package binary
       if: ${{ env.has_sf }}
       run: |
-        Rscript .github/scripts/build_sf.R 
+        Rscript .github/scripts/build_sf.R
+        cd vendor_r/src/contrib
+        find -name 'sf_*' -print0 | sed -ze "p;s/\_R_x86_64-pc-linux-gnu//" | xargs -0 -n2 mv
+        cd ../../..
 
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
       if: ${{ env.has_sf }}
@@ -57,8 +60,10 @@ jobs:
           find / -iname $L 2>/dev/null | xargs -I {} .github/scripts/lib_tar.sh {}
         done
         git add r-lib
+        cp .github/scripts/extract_libraries.sh extract_libraries.sh
+        git add extract_libraries.sh
       env:
-        LIBS: libgdal.so.26 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so libudunits2.so.0 proj.db
+        LIBS: libgdal.so.26 libgeos_c.so libgeos-3.8.0.so libnlopt.so.0 libproj.so.12 libudunits2.so.0 proj.db
 
     - name: Write package descriptions
       run: |
