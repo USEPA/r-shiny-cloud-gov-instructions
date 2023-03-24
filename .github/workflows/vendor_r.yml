@@ -3,7 +3,15 @@ on:
 
 jobs:
   download_and_vendor_dependencies:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    name: Compile and vendor R dependencies for cloud.gov
+    defaults:
+      run:
+        working-directory: /workspace
+    container:
+      image: cloudfoundry/cflinuxfs3
+      volumes: 
+       - ${{ github.workspace }}:/workspace
   
     steps:
     - uses: actions/checkout@v3
