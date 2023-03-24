@@ -59,8 +59,7 @@ jobs:
         do
           find / -iname $L 2>/dev/null | xargs -I {} .github/scripts/lib_tar.sh {}
         done
-        echo $GDAL_DATA
-        tar czvf /usr/share/gdal/2.2 r-lib/gdal-data.tar.gz
+        .github/scripts/lib_tar.sh /usr/share/gdal/2.2
         git add r-lib
         cp .github/scripts/extract_libraries.sh extract_libraries.sh
         git add extract_libraries.sh

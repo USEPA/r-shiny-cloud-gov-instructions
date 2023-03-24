@@ -8,7 +8,7 @@ if [ $# -eq 0 ]
 fi
 
 #Check that the file exists
-if ! test -f "$1"; then
+if ! test -e "$1"; then
     echo "$1 does not exist"
     exit
 fi
