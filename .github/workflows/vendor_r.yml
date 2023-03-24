@@ -28,7 +28,7 @@ jobs:
       run: |
         sed -n -e 's/^.*- name: //p' r.yml | tr -d '\015' | sed -n -e 'H;${x;s/\n/,/g;s/^,//;p;}' | xargs echo packs= >> $GITHUB_ENV
 
-    - name: Download R packages
+    - name: Download R packages except sf
       run: |
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
