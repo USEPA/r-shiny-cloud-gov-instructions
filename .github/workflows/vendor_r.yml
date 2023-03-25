@@ -14,13 +14,13 @@ jobs:
     #     apt-get -y update
     #     apt-get install -y software-properties-common git
 
+    - uses: actions/checkout@v3
+
     - name: Install libcurl
       run: |
         sudo apt-get update -y 
         sudo apt-get install -y libcurl4-openssl-dev
         sudo bash .github/scripts/install_geospatial.sh
-
-    - uses: actions/checkout@v3
 
     - name: Setup Git
       run: |
