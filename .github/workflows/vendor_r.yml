@@ -3,17 +3,22 @@ on:
 
 jobs:
   download_and_vendor_dependencies:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     name: Compile and vendor R dependencies for cloud.gov
-    defaults:
-    container:
-      image: cloudfoundry/cflinuxfs3
+    # container:
+    #   image: cloudfoundry/cflinuxfs3
   
     steps:
-    - name: Install Git
+    # - name: Install Git
+    #   run: |
+    #     apt-get -y update
+    #     apt-get install -y software-properties-common git
+
+    - name: Install libcurl
       run: |
-        apt-get -y update
-        apt-get install -y software-properties-common git
+        sudo apt-get update -y 
+        sudo apt-get install -y libcurl4-openssl-dev
+        sudo bash .github/scripts/install_geospatial.sh
 
     - uses: actions/checkout@v3
 
@@ -53,6 +58,7 @@ jobs:
     - name: Build sf package binary
       if: ${{ env.has_sf }}
       run: |
+        ./github/scripts/install_geospatial
         Rscript .github/scripts/build_sf.R
         cd vendor_r/src/contrib
         find -name 'sf_*' -print0 | sed -ze "p;s/\_R_x86_64-pc-linux-gnu//" | xargs -0 -n2 mv
