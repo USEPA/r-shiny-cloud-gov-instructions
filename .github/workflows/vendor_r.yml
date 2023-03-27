@@ -3,20 +3,20 @@ on:
 
 jobs:
   download_and_vendor_dependencies:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     name: Compile and vendor R dependencies for cloud.gov
-    container: ubuntu:18.04
+    # container: ubuntu:18.04
 
     steps:
-    - name: Install Image dependencies
-      run: |
-        apt-get update -y 
-        apt-get install -y libcurl4-openssl-dev software-properties-common git
+    # - name: Install Image dependencies
+    #   run: |
+    #     apt-get update -y 
+    #     apt-get install -y libcurl4-openssl-dev software-properties-common git
         
     - name: Checkout Code
       uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      # with:
+      #   fetch-depth: 0
 
     - name: Setup Git
       run: |
