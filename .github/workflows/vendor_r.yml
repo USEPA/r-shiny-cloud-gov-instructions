@@ -1,5 +1,5 @@
 on:
-  workflow_dispatch:
+  [push]
 
 jobs:
   download_and_vendor_dependencies:
@@ -10,6 +10,8 @@ jobs:
     steps:
     - name: Install Image dependencies
       run: |
+        apt-get update -y 
+        apt-get install -y software-properties-common
         add-apt-repository ppa:git-core/ppa
         apt-get update -y 
         apt-get install -y git
