@@ -15,6 +15,8 @@ jobs:
         
     - name: Checkout Code
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Setup Git
       run: |
