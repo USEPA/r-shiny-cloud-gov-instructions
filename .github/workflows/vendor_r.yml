@@ -3,20 +3,21 @@ on:
 
 jobs:
   download_and_vendor_dependencies:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     name: Compile and vendor R dependencies for cloud.gov
-    # container: ubuntu:18.04
+    container: ubuntu:18.04
 
     steps:
-    # - name: Install Image dependencies
-    #   run: |
-    #     apt-get update -y 
-    #     apt-get install -y libcurl4-openssl-dev software-properties-common git
+    - name: Install Image dependencies
+      run: |
+        add-apt-repository ppa:git-core/ppa
+        apt-get update -y 
+        apt-get install -y git
         
     - name: Checkout Code
       uses: actions/checkout@v3
-      # with:
-      #   fetch-depth: 0
+      with:
+        fetch-depth: 0
 
     - name: Setup Git
       run: |
@@ -47,8 +48,8 @@ jobs:
     - name: Add build requirements for sf dependencies
       if: ${{ env.has_sf }}
       run: |
-        apt-get update -y
-        apt-get install -y wget cmake build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev
+        sudo apt-get update -y
+        sudo apt-get install -y wget cmake build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev
 
     - name: Install GEOS
       if: ${{ env.has_sf }}
