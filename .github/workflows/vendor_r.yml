@@ -5,26 +5,16 @@ jobs:
   download_and_vendor_dependencies:
     runs-on: ubuntu-latest
     name: Compile and vendor R dependencies for cloud.gov
-    defaults:
-      run:
-        working-directory: /workspace
-    container:
-      image: cloudfoundry/cflinuxfs3
-      volumes: 
-      - ${{ github.workspace }}:/workspace 
+    container: ubuntu:18.04
 
     steps:
     - name: Install Image dependencies
       run: |
         sudo apt-get update -y 
         sudo apt-get install -y libcurl4-openssl-dev software-properties-common git
-        git config --global --add safe.directory /__w/cflinuxfs3-CRAN/cflinuxfs3-CRAN
         
     - name: Checkout Code
       uses: actions/checkout@v3
-
-    - name: Install geospatial packages
-      run: sudo bash .github/scripts/install_geospatial.sh
 
     - name: Setup Git
       run: |
@@ -41,6 +31,7 @@ jobs:
       with:
         packages: |
           stringr
+          devtools
 
     - name: List R dependencies
       run: |
@@ -51,13 +42,61 @@ jobs:
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
         Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
-    - name: Download dependencies for sf
+    - name: Add build requirements for sf dependencies
       if: ${{ env.has_sf }}
-      uses: r-lib/actions/setup-r-dependencies@v2
-      with:
-        packages: |
-          devtools
-          sf
+      run: |
+        apt-get update -y
+        apt-get install -y wget cmake build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev
+
+    - name: Install GEOS
+      if: ${{ env.has_sf }}
+      run: |
+        wget https://download.osgeo.org/geos/geos-3.9.4.tar.bz2
+        tar xfj geos-3.9.4.tar.bz2
+        cd geos-3.9.4
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..
+        make
+        ctest
+        make install
+
+    - name: Install sqlite3
+      if: ${{ env.has_sf }}
+      run: |
+        wget https://sqlite.org/2023/sqlite-autoconf-3410200.tar.gz
+        tar -xf sqlite-autoconf-3410200.tar.gz
+        cd sqlite-autoconf-3410200
+        ./configure
+        make
+        apt-get -y purge sqlite3
+        make install
+        sqlite3 --version
+        export PATH="/usr/local/bin:$PATH"
+
+    - name: Install PROJ
+      if: ${{ env.has_sf }}
+      run: |
+        wget https://download.osgeo.org/proj/proj-9.2.0.tar.gz
+        tar -xf proj-9.2.0.tar.gz
+        cd proj-9.2.0
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+        cmake --build . --target install
+        
+    - name: Install GDAL
+      if: ${{ env.has_sf }}
+      run: |
+        wget https://github.com/OSGeo/gdal/releases/download/v3.6.3/gdal-3.6.3.tar.gz
+        tar -xf gdal-3.6.3.tar.gz
+        cd gdal-3.6.3
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+        cmake --build . --target install
 
     - name: Build sf package binary
       if: ${{ env.has_sf }}
@@ -77,12 +116,9 @@ jobs:
         do
           find / -iname $L 2>/dev/null | xargs -I {} .github/scripts/lib_tar.sh {}
         done
-        .github/scripts/lib_tar.sh /usr/share/gdal
         git add r-lib
-        cp .github/scripts/extract_libraries.sh extract_libraries.sh
-        git add extract_libraries.sh
       env:
-        LIBS: libgdal.so.20 libgeos_c.so libgeos-3.6.2.so libnlopt.so.0 libproj.so.12 libudunits2.so.0 proj.db
+        LIBS: libgdal.so.36 libgeos_c.so libgeos-3.9.4.so libnlopt.so.0 libproj.so.92 libudunits2.so.0 proj.db
 
     - name: Write package descriptions
       run: |
