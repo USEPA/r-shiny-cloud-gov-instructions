@@ -10,8 +10,8 @@ jobs:
     steps:
     - name: Install Image dependencies
       run: |
-        sudo apt-get update -y 
-        sudo apt-get install -y libcurl4-openssl-dev software-properties-common git
+        apt-get update -y 
+        apt-get install -y libcurl4-openssl-dev software-properties-common git
         
     - name: Checkout Code
       uses: actions/checkout@v3
