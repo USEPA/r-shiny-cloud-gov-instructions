@@ -25,14 +25,11 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 1
+        fetch-depth: 0
 
     - name: Setup Git
       run: |
-        # export PATH="/usr/bin:$PATH"
-        # git config --global --add safe.directory "$GITHUB_WORKSPACE"
-        ls -la
-        git config --global --add safe.directory $(realpath .)
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
         git config user.name github-actions
         git config user.email github-actions@github.com
 
@@ -55,7 +52,7 @@ jobs:
     - name: Download R packages except sf
       run: |
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
-        Rscript .github/scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
+        Rscript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
     - name: Add build requirements for sf dependencies
       if: ${{ env.has_sf }}
@@ -116,7 +113,7 @@ jobs:
     - name: Build sf package binary
       if: ${{ env.has_sf }}
       run: |
-        Rscript .github/scripts/build_sf.R
+        Rscript scripts/build_sf.R
         cd vendor_r/src/contrib
         find -name 'sf_*' -print0 | sed -ze "p;s/\_R_x86_64-pc-linux-gnu//" | xargs -0 -n2 mv
         cd ../../..
@@ -126,10 +123,10 @@ jobs:
       run: |
         if [ -d "r-lib" ]; then rm -fr r-lib; fi
         mkdir r-lib
-        chmod +x .github/scripts/lib_tar.sh
+        chmod +x scripts/lib_tar.sh
         for L in $LIBS
         do
-          find / -iname $L 2>/dev/null | xargs -I {} .github/scripts/lib_tar.sh {}
+          find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
         done
         git add r-lib
       env:
@@ -137,7 +134,7 @@ jobs:
 
     - name: Write package descriptions
       run: |
-        Rscript .github/scripts/write_descriptions.R 
+        Rscript scripts/write_descriptions.R 
 
     - name: Commit & Push
       if: ${{ success() }}

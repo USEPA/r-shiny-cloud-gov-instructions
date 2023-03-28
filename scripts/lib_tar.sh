@@ -8,7 +8,7 @@ if [ $# -eq 0 ]
 fi
 
 #Check that the file exists
-if ! test -e "$1"; then
+if ! test -f "$1"; then
     echo "$1 does not exist"
     exit
 fi
@@ -20,11 +20,7 @@ TEMP_DIR=temp_lib
 
 mkdir $TEMP_DIR
 
-if test -d "$1"; then
-    cp -vr $1 $TEMP_DIR
-else
-    cp -v $1 $TEMP_DIR
-fi
+cp -v $1 $TEMP_DIR
 
 if [[ "$FILE" == *".so"* ]]; then
     ldd $1 | grep "=> /" | awk '{print $3}' | xargs -I '{}' cp -v '{}' $TEMP_DIR
