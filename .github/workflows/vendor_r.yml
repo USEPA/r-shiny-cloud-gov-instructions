@@ -5,8 +5,14 @@ jobs:
   download_and_vendor_dependencies:
     runs-on: ubuntu-latest
     name: Compile and vendor R dependencies for cloud.gov
-    container: ubuntu:18.04
-
+    defaults:
+      run:
+        working-directory: /workspace
+    container:
+      image: cloudfoundry/cflinuxfs3
+      volumes: 
+       - ${{ github.workspace }}:/workspace
+       
     steps:
     - name: Install Image dependencies
       run: |
