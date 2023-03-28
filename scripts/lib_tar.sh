@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Full path supplied is: $1"
+
 #Make sure we get a command line parameter for the file
 if [ $# -eq 0 ]
   then

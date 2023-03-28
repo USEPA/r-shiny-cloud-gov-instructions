@@ -126,15 +126,30 @@ jobs:
         chmod +x scripts/lib_tar.sh
         for L in $LIBS
         do
-          find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
+          find / -iname $L 2>/dev/null | xargs -I {} ./lib_tar.sh {}
         done
         git add r-lib
       env:
-        LIBS: libgdal.so.36 libgeos_c.so libgeos-3.9.4.so libnlopt.so.0 libproj.so.92 libudunits2.so.0 proj.db
+        LIBS: libudunits2.so.0 proj.db libgeos_c.so
 
     - name: Write package descriptions
       run: |
         Rscript scripts/write_descriptions.R 
+
+    - name: Add additional files to repo if not already there
+      run: |
+        if [ ! test -f "manifest*.yml" ]; 
+          then cp scripts/include/manifest.yml .
+          git add manifest.yml
+        fi
+        if [ ! test -f ".cfignore" ]; 
+          then cp scripts/include/.cfignore .
+          git add .cfignore
+        fi
+        if [ ! test -f "shiny.R" ]; 
+          then cp scripts/include/shiny.R .
+          git add shiny.R
+        fi
 
     - name: Commit & Push
       if: ${{ success() }}
