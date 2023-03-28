@@ -12,7 +12,7 @@ jobs:
       image: cloudfoundry/cflinuxfs3
       volumes: 
        - ${{ github.workspace }}:/workspace
-       
+
     steps:
     - name: Install Image dependencies
       run: |
@@ -30,7 +30,6 @@ jobs:
 
     - name: Setup Git
       run: |
-        cd ${{ github.workspace }}
         git config user.name github-actions
         git config user.email github-actions@github.com
 
