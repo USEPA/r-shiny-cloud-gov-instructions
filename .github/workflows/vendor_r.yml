@@ -126,7 +126,7 @@ jobs:
         chmod +x scripts/lib_tar.sh
         for L in $LIBS
         do
-          find / -iname $L 2>/dev/null | xargs -I {} ./lib_tar.sh {}
+          find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
         done
         git add r-lib
       env:
