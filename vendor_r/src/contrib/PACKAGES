@@ -1012,7 +1012,7 @@ Suggests: blob, covr, dplyr (>= 0.8-3), ggplot2, knitr, lwgeom (>=
         tibble (>= 1.4.1), tidyr (>= 1.2.0), tidyselect (>= 1.0.0),
         tmap (>= 2.0), vctrs, wk
 License: GPL-2 | MIT + file LICENSE
-MD5sum: 908c4ef64deeb06e7274b41519994655
+MD5sum: b58df7b4823c75ebb83f71762c408824
 NeedsCompilation: yes
 
 Package: shinyBS
