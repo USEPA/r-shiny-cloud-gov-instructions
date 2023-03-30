@@ -58,7 +58,7 @@ jobs:
       if: ${{ env.has_sf }} == TRUE
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y wget build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev
+        sudo apt-get install -y wget build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev udunits-bin
         wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
         sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
         sudo apt-get update -y
@@ -67,9 +67,9 @@ jobs:
     - name: Install GEOS
       if: ${{ env.has_sf }} == TRUE
       run: |
-        wget https://download.osgeo.org/geos/geos-3.9.4.tar.bz2
-        tar xfj geos-3.9.4.tar.bz2
-        cd geos-3.9.4
+        wget https://download.osgeo.org/geos/geos-3.11.2.tar.bz2
+        tar xfj geos-3.11.2.tar.bz2
+        cd geos-3.11.2
         mkdir build
         cd build
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..
@@ -90,17 +90,17 @@ jobs:
         sqlite3 --version
         export PATH="/usr/local/bin:$PATH"
     
-    - name: Install udunits
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://downloads.unidata.ucar.edu/udunits/2.2.28/udunits-2.2.28.tar.gz
-        tar -xf udunits-2.2.28.tar.gz
-        cd udunits-2.2.28
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        cmake --build . --target install
+    # - name: Install udunits
+    #   if: ${{ env.has_sf }} == TRUE
+    #   run: |
+    #     wget https://downloads.unidata.ucar.edu/udunits/2.2.28/udunits-2.2.28.tar.gz
+    #     tar -xf udunits-2.2.28.tar.gz
+    #     cd udunits-2.2.28
+    #     mkdir build
+    #     cd build
+    #     cmake ..
+    #     cmake --build .
+    #     cmake --build . --target install
 
     - name: Install PROJ
       if: ${{ env.has_sf }} == TRUE
