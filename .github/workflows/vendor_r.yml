@@ -147,7 +147,7 @@ jobs:
         scripts/lib_tar.sh /usr/local/share/proj/proj.db
         git add r-lib
       env:
-        LIBS: libudunits2.so.0 libgeos_c.so
+        LIBS: libudunits2.so.0 libgeos_c.so libproj.so.12
 
     - name: Write package descriptions
       run: |
