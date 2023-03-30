@@ -58,7 +58,12 @@ jobs:
       if: ${{ env.has_sf }} == TRUE
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y wget cmake build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev
+        sudo apt-get install -y wget build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev
+        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
+        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+        sudo apt-get update
+        sudo apt install cmake
+        sudo apt install cmake-curses-gui
 
     - name: Install GEOS
       if: ${{ env.has_sf }} == TRUE
