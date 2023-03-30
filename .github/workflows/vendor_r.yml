@@ -155,7 +155,7 @@ jobs:
         LIBS: libudunits2.so.0 libproj.so libgdal.so.32.3.6.3 libsqlite3.so.0
         FULLPATH_LIBS: /usr/local/lib/libgeos_c.so /usr/local/share/proj/proj.db
 
-    - name List files on image
+    - name: List files on image
       run: |
         ls -laR /usr/local/lib
         ls -laR /usr/lib
