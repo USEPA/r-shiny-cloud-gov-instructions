@@ -129,6 +129,7 @@ jobs:
     - name: Build sf package binary
       if: ${{ env.has_sf }} == TRUE
       run: |
+        R -e "install.packages(c('sf'), repos = 'https://cloud.r-project.org')"
         Rscript scripts/build_sf.R
         cd vendor_r/src/contrib
         find -name 'sf_*' -print0 | sed -ze "p;s/\_R_x86_64-pc-linux-gnu//" | xargs -0 -n2 mv
@@ -144,10 +145,21 @@ jobs:
         do
           find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
         done
-        scripts/lib_tar.sh /usr/local/share/proj/proj.db
+        for L in $FULLPATH_LIBS
+        do
+          scripts/lib_tar.sh $L
+        done
+        scripts/lib_tar.sh 
         git add r-lib
       env:
-        LIBS: libudunits2.so.0 libgeos_c.so libproj.so libgdal.so.32.3.6.3 libsqlite3.so.0
+        LIBS: libudunits2.so.0 libproj.so libgdal.so.32.3.6.3 libsqlite3.so.0
+        FULLPATH_LIBS: /usr/local/lib/libgeos_c.so /usr/local/share/proj/proj.db
+
+    - name List files on image
+      run: |
+        ls -laR /usr/local/lib
+        ls -laR /usr/lib
+        ls -laR /usr/local/share
 
     - name: Write package descriptions
       run: |
