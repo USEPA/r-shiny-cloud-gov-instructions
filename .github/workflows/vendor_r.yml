@@ -19,7 +19,7 @@ jobs:
         apt-get update -y 
         apt-get install -y software-properties-common
         add-apt-repository ppa:git-core/ppa
-        apt-get update -y 
+        apt-get update -y
         apt-get install -y git
         
     - name: Checkout Code
@@ -55,13 +55,13 @@ jobs:
         Rscript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
     - name: Add build requirements for sf dependencies
-      if: ${{ env.has_sf }}
+      if: ${{ env.has_sf }} == TRUE
       run: |
         sudo apt-get update -y
         sudo apt-get install -y wget cmake build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev
 
     - name: Install GEOS
-      if: ${{ env.has_sf }}
+      if: ${{ env.has_sf }} == TRUE
       run: |
         wget https://download.osgeo.org/geos/geos-3.9.4.tar.bz2
         tar xfj geos-3.9.4.tar.bz2
@@ -74,7 +74,7 @@ jobs:
         make install
 
     - name: Install sqlite3
-      if: ${{ env.has_sf }}
+      if: ${{ env.has_sf }} == TRUE
       run: |
         wget https://sqlite.org/2023/sqlite-autoconf-3410200.tar.gz
         tar -xf sqlite-autoconf-3410200.tar.gz
@@ -85,9 +85,21 @@ jobs:
         make install
         sqlite3 --version
         export PATH="/usr/local/bin:$PATH"
+    
+    - name: Install udunits
+      if: ${{ env.has_sf }} == TRUE
+      run: |
+        wget https://downloads.unidata.ucar.edu/udunits/2.2.28/udunits-2.2.28.tar.gz
+        tar -xf udunits-2.2.28.tar.gz
+        cd udunits-2.2.28
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+        cmake --build . --target install
 
     - name: Install PROJ
-      if: ${{ env.has_sf }}
+      if: ${{ env.has_sf }} == TRUE
       run: |
         wget https://download.osgeo.org/proj/proj-9.2.0.tar.gz
         tar -xf proj-9.2.0.tar.gz
@@ -99,7 +111,7 @@ jobs:
         cmake --build . --target install
         
     - name: Install GDAL
-      if: ${{ env.has_sf }}
+      if: ${{ env.has_sf }} == TRUE
       run: |
         wget https://github.com/OSGeo/gdal/releases/download/v3.6.3/gdal-3.6.3.tar.gz
         tar -xf gdal-3.6.3.tar.gz
@@ -111,7 +123,7 @@ jobs:
         cmake --build . --target install
 
     - name: Build sf package binary
-      if: ${{ env.has_sf }}
+      if: ${{ env.has_sf }} == TRUE
       run: |
         Rscript scripts/build_sf.R
         cd vendor_r/src/contrib
@@ -119,7 +131,7 @@ jobs:
         cd ../../..
 
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
-      if: ${{ env.has_sf }}
+      if: ${{ env.has_sf }} == TRUE
       run: |
         if [ -d "r-lib" ]; then rm -fr r-lib; fi
         mkdir r-lib
@@ -128,9 +140,10 @@ jobs:
         do
           find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
         done
+        scripts/lib_tar.sh /usr/local/share/proj/proj.db
         git add r-lib
       env:
-        LIBS: libudunits2.so.0 proj.db libgeos_c.so
+        LIBS: libudunits2.so.0 libgeos_c.so
 
     - name: Write package descriptions
       run: |
