@@ -59,7 +59,7 @@ jobs:
       if: ${{ env.has_sf }} == TRUE
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev
+        sudo apt-get install -y libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libmariadbclient-dev
 
     - name: Build sf package binary
       if: ${{ env.has_sf }} == TRUE
