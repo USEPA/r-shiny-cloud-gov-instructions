@@ -13,49 +13,17 @@ jobs:
       volumes: 
        - ${{ github.workspace }}:/workspace
 
-    steps:
-    - name: Install Image dependencies
-      run: |
-        apt-get update -y 
-        function apt_install() {
-            if ! dpkg -s "$@" >/dev/null 2>&1; then
-                if [ "$(find /var/lib/apt/lists/* | wc -l)" = "0" ]; then
-                    apt-get update
-                fi
-                apt-get install -y --no-install-recommends "$@"
-            fi
-        }
-        apt_install \
-            gdal-bin \
-            lbzip2 \
-            libfftw3-dev \
-            libgdal-dev \
-            libgeos-dev \
-            libgsl0-dev \
-            libgl1-mesa-dev \
-            libglu1-mesa-dev \
-            libhdf4-alt-dev \
-            libhdf5-dev \
-            libjq-dev \
-            libpq-dev \
-            libproj-dev \
-            libprotobuf-dev \
-            libnetcdf-dev \
-            libsqlite3-dev \
-            libssl-dev \
-            libudunits2-dev \
-            netcdf-bin \
-            postgis \
-            protobuf-compiler \
-            sqlite3 \
-            tk-dev \
-            unixodbc-dev
-        
+    steps:      
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
         ref: cflinux4
+
+    - name: Install image depedencies
+      run: |
+        chmod +x scripts/install_geospatial_deps.sh
+        sudo scripts/install_geospatial_deps.sh
 
     - name: Setup Git
       run: |
