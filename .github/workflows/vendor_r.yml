@@ -51,6 +51,7 @@ jobs:
       if: ${{ env.has_sf }} == TRUE
       run: |
         sudo apt-get -y update
+        sudo apt --purge autoremove libmariadbclient-dev
         sudo apt-get install -y libssl-dev libudunits2-dev libgeos-dev libproj-dev libsqlite3-dev wget cmake
 
     - name: Install GDAL
