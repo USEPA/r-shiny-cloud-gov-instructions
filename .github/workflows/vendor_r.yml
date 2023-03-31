@@ -17,10 +17,10 @@ jobs:
     - name: Install Image dependencies
       run: |
         apt-get update -y 
-        apt-get install -y software-properties-common
-        add-apt-repository ppa:git-core/ppa
-        apt-get update -y
-        apt-get install -y git
+        apt-get install -y software-properties-common git
+        # add-apt-repository ppa:git-core/ppa
+        # apt-get update -y
+        # apt-get install -y git
         
     - name: Checkout Code
       uses: actions/checkout@v3
