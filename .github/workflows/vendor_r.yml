@@ -52,19 +52,7 @@ jobs:
       run: |
         sudo apt-get -y update
         sudo apt --purge autoremove libmariadbclient-dev
-        sudo apt-get install -y libssl-dev libudunits2-dev libgeos-dev libproj-dev libsqlite3-dev wget cmake
-
-    - name: Install GDAL
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://github.com/OSGeo/gdal/releases/download/v3.6.3/gdal-3.6.3.tar.gz
-        tar -xf gdal-3.6.3.tar.gz
-        cd gdal-3.6.3
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        cmake --build . --target install
+        sudo apt-get install -y libssl-dev libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev 
 
     - name: Build sf package binary
       if: ${{ env.has_sf }} == TRUE
