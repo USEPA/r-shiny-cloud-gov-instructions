@@ -26,6 +26,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+        ref: apt-install
 
     - name: Setup Git
       run: |
@@ -59,72 +60,9 @@ jobs:
       run: |
         sudo apt-get update -y
         sudo apt-get install -y wget build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev udunits-bin
-        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
-        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+        sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
         sudo apt-get update -y
-        sudo apt install -y cmake cmake-curses-gui
-
-    - name: Install GEOS
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://download.osgeo.org/geos/geos-3.11.2.tar.bz2
-        tar xfj geos-3.11.2.tar.bz2
-        cd geos-3.11.2
-        mkdir build
-        cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..
-        make
-        ctest
-        make install
-
-    - name: Install sqlite3
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://sqlite.org/2023/sqlite-autoconf-3410200.tar.gz
-        tar -xf sqlite-autoconf-3410200.tar.gz
-        cd sqlite-autoconf-3410200
-        ./configure
-        make
-        apt-get -y purge sqlite3
-        make install
-        sqlite3 --version
-        export PATH="/usr/local/bin:$PATH"
-    
-    # - name: Install udunits
-    #   if: ${{ env.has_sf }} == TRUE
-    #   run: |
-    #     wget https://downloads.unidata.ucar.edu/udunits/2.2.28/udunits-2.2.28.tar.gz
-    #     tar -xf udunits-2.2.28.tar.gz
-    #     cd udunits-2.2.28
-    #     mkdir build
-    #     cd build
-    #     cmake ..
-    #     cmake --build .
-    #     cmake --build . --target install
-
-    - name: Install PROJ
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://download.osgeo.org/proj/proj-9.2.0.tar.gz
-        tar -xf proj-9.2.0.tar.gz
-        cd proj-9.2.0
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        cmake --build . --target install
-        
-    - name: Install GDAL
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://github.com/OSGeo/gdal/releases/download/v3.6.3/gdal-3.6.3.tar.gz
-        tar -xf gdal-3.6.3.tar.gz
-        cd gdal-3.6.3
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        cmake --build . --target install
+        sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite0-dev
 
     - name: Build sf package binary
       if: ${{ env.has_sf }} == TRUE
@@ -145,15 +83,9 @@ jobs:
         do
           find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
         done
-        for L in $FULLPATH_LIBS
-        do
-          scripts/lib_tar.sh $L
-        done
-        scripts/lib_tar.sh 
         git add r-lib
       env:
-        LIBS: libudunits2.so.0 libproj.so libgdal.so.32.3.6.3 libsqlite3.so.0
-        FULLPATH_LIBS: /usr/local/lib/libgeos_c.so /usr/local/share/proj/proj.db
+        LIBS: libudunits2.so.0 libgeos_c.so libproj.so.12 proj.db libgdal.so.32.3.6.3 libsqlite3.so.0
 
     - name: List files on image
       run: |
