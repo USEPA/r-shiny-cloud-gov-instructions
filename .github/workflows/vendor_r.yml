@@ -17,19 +17,13 @@ jobs:
     - name: Install Image dependencies
       run: |
         apt-get update -y 
-        apt-get install -y software-properties-common git
+        apt-get install -y software-properties-common git libssl-dev libudunits2-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libgdal-dev
         
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
         ref: cflinux4
-
-    - name: Add build requirements for sf dependencies
-      run: |
-        sudo apt-get -y update
-        sudo dpkg -i --force-overwrite /var/cache/apt/archives/libmysqlclient-dev_8.0.32-0ubuntu0.22.04.2_amd64.deb
-        sudo apt-get install -y libssl-dev libudunits2-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libgdal-dev
 
     - name: Setup Git
       run: |
