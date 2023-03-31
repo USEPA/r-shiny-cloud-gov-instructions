@@ -1,7 +1,7 @@
 library(stringr)
 args <- commandArgs(trailingOnly = TRUE)
 
-repoUrl = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"
+repoUrl = "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest"
 
 # Test if a package destination directory was passed as an argument
 if (length(args) == 0) {

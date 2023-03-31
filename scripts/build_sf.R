@@ -1,6 +1,6 @@
 out_dir <- "vendor_r/src/contrib"
 
-repoUrl = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"
+repoUrl = "https://cloud.r-project.org"
 
 dir.create("junktemp")
 download.packages(c("sf"), destdir = "junktemp", repos = repoUrl)

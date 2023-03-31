@@ -26,7 +26,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-        ref: apt-install
+        ref: cflinux4
 
     - name: Setup Git
       run: |
@@ -45,6 +45,7 @@ jobs:
         packages: |
           stringr
           devtools
+          sf
 
     - name: List R dependencies
       run: |
@@ -55,11 +56,11 @@ jobs:
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
         Rscript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
-    - name: Add build requirements for sf dependencies
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev
+    # - name: Add build requirements for sf dependencies
+    #   if: ${{ env.has_sf }} == TRUE
+    #   run: |
+    #     sudo apt-get update -y
+    #     sudo apt-get install -y libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev
 
     - name: Build sf package binary
       if: ${{ env.has_sf }} == TRUE
