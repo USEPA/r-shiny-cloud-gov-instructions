@@ -13,23 +13,7 @@ jobs:
       volumes: 
        - ${{ github.workspace }}:/workspace
 
-    steps:      
-    - name: Add build requirements for sf dependencies
-      run: |
-        apt-get -y update
-        apt-get install -y libssl-dev libudunits2-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev wget cmake
-
-    - name: Install GDAL
-      run: |
-        wget https://github.com/OSGeo/gdal/releases/download/v3.6.3/gdal-3.6.3.tar.gz
-        tar -xf gdal-3.6.3.tar.gz
-        cd gdal-3.6.3
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        cmake --build . --target install
-    
+    steps:    
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
@@ -63,13 +47,23 @@ jobs:
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
         Rscript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
-    # - name: Add build requirements for sf dependencies
-    #   if: ${{ env.has_sf }} == TRUE
-    #   run: |
-    #     sudo apt-get -y update
-    #     # sudo dpkg -i --force-overwrite /var/cache/apt/archives/libmysqlclient-dev_8.0.32-0ubuntu0.22.04.2_amd64.deb
-    #     sudo apt-get install -y libssl-dev libudunits2-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev
-    #     sudo apt-get install -y libgdal-dev
+    - name: Add build requirements for sf dependencies
+      if: ${{ env.has_sf }} == TRUE
+      run: |
+        sudo apt-get -y update
+        sudo apt-get install -y libssl-dev libudunits2-dev libgeos-dev libproj-dev libsqlite3-dev wget cmake
+
+    - name: Install GDAL
+      if: ${{ env.has_sf }} == TRUE
+      run: |
+        wget https://github.com/OSGeo/gdal/releases/download/v3.6.3/gdal-3.6.3.tar.gz
+        tar -xf gdal-3.6.3.tar.gz
+        cd gdal-3.6.3
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+        cmake --build . --target install
 
     - name: Build sf package binary
       if: ${{ env.has_sf }} == TRUE
