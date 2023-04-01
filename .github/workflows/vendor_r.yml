@@ -69,7 +69,7 @@ jobs:
         done
         git add r-lib
       env:
-        LIBS: libudunits2.so.0 libgeos_c.so libproj.so.12 proj.db libgdal.so.20 libsqlite3.so.0
+        LIBS: libudunits2.so.0 libgeos_c.so libproj.so.22 proj.db libgdal.so.20 libsqlite3.so.0
 
     - name: Write package descriptions
       run: |
