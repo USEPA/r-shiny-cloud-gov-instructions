@@ -17,7 +17,7 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        fetch-depth: 1
         ref: clean-up
 
     - name: Setup Git and remove problematic packages
@@ -67,9 +67,10 @@ jobs:
         do
           find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
         done
+        scripts/lib_tar.sh /usr/lib/x86_64-linux-gnu/libsqlite3.so.0    # Another libsqlite3.so.0 exists on the image
         git add r-lib
       env:
-        LIBS: libudunits2.so.0 libgeos_c.so libproj.so.22 proj.db libgdal.so.20 libsqlite3.so.0
+        LIBS: libudunits2.so.0 libgeos_c.so libproj.so.22 proj.db libgdal.so.30
 
     - name: Write package descriptions
       run: |
