@@ -6,4 +6,4 @@ applications:
     - route: YOUR_APP_ROUTE_HERE.app.cloud.gov
   buildpacks:
      - r_buildpack
-  command: bash scripts/extract_libraries.sh && R -f shiny.R
+  command: R -f shiny.R

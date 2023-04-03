@@ -1,5 +1,3 @@
 *.Rproj
 .github
-scripts/include
-scripts/*.R
-scripts/lib_tar.sh
+scripts
