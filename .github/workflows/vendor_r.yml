@@ -1,5 +1,5 @@
 on:
-  [push]
+  workflow_dispatch:
 
 jobs:
   download_and_vendor_dependencies:
