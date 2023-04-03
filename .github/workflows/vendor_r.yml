@@ -1,5 +1,5 @@
 on:
-  [push]
+  workflow_dispatch:
 
 jobs:
   download_and_vendor_dependencies:
@@ -9,29 +9,22 @@ jobs:
       run:
         working-directory: /workspace
     container:
-      image: cloudfoundry/cflinuxfs3
+      image: cloudfoundry/cflinuxfs4
       volumes: 
        - ${{ github.workspace }}:/workspace
 
-    steps:
-    - name: Install Image dependencies
-      run: |
-        apt-get update -y 
-        apt-get install -y software-properties-common
-        add-apt-repository ppa:git-core/ppa
-        apt-get update -y
-        apt-get install -y git
-        
+    steps:    
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        fetch-depth: 1
 
-    - name: Setup Git
+    - name: Setup Git and remove problematic packages
       run: |
         git config --global --add safe.directory $(realpath .)
         git config user.name github-actions
         git config user.email github-actions@github.com
+        sudo apt --purge autoremove -y libmariadb-dev libmariadb-dev-compat
 
     - name: Setup R
       uses: r-lib/actions/setup-r@v2
@@ -44,6 +37,7 @@ jobs:
         packages: |
           stringr
           devtools
+          sf
 
     - name: List R dependencies
       run: |
@@ -54,82 +48,9 @@ jobs:
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
         Rscript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }} >> $GITHUB_ENV
 
-    - name: Add build requirements for sf dependencies
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y wget build-essential libreadline-dev libtiff-dev libcurl4-openssl-dev udunits-bin
-        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
-        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
-        sudo apt-get update -y
-        sudo apt install -y cmake cmake-curses-gui
-
-    - name: Install GEOS
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://download.osgeo.org/geos/geos-3.11.2.tar.bz2
-        tar xfj geos-3.11.2.tar.bz2
-        cd geos-3.11.2
-        mkdir build
-        cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..
-        make
-        ctest
-        make install
-
-    - name: Install sqlite3
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://sqlite.org/2023/sqlite-autoconf-3410200.tar.gz
-        tar -xf sqlite-autoconf-3410200.tar.gz
-        cd sqlite-autoconf-3410200
-        ./configure
-        make
-        apt-get -y purge sqlite3
-        make install
-        sqlite3 --version
-        export PATH="/usr/local/bin:$PATH"
-    
-    # - name: Install udunits
-    #   if: ${{ env.has_sf }} == TRUE
-    #   run: |
-    #     wget https://downloads.unidata.ucar.edu/udunits/2.2.28/udunits-2.2.28.tar.gz
-    #     tar -xf udunits-2.2.28.tar.gz
-    #     cd udunits-2.2.28
-    #     mkdir build
-    #     cd build
-    #     cmake ..
-    #     cmake --build .
-    #     cmake --build . --target install
-
-    - name: Install PROJ
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://download.osgeo.org/proj/proj-9.2.0.tar.gz
-        tar -xf proj-9.2.0.tar.gz
-        cd proj-9.2.0
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        cmake --build . --target install
-        
-    - name: Install GDAL
-      if: ${{ env.has_sf }} == TRUE
-      run: |
-        wget https://github.com/OSGeo/gdal/releases/download/v3.6.3/gdal-3.6.3.tar.gz
-        tar -xf gdal-3.6.3.tar.gz
-        cd gdal-3.6.3
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        cmake --build . --target install
-
     - name: Build sf package binary
       if: ${{ env.has_sf }} == TRUE
       run: |
-        R -e "install.packages(c('sf'), repos = 'https://cloud.r-project.org')"
         Rscript scripts/build_sf.R
         cd vendor_r/src/contrib
         find -name 'sf_*' -print0 | sed -ze "p;s/\_R_x86_64-pc-linux-gnu//" | xargs -0 -n2 mv
@@ -145,21 +66,10 @@ jobs:
         do
           find / -iname $L 2>/dev/null | xargs -I {} scripts/lib_tar.sh {}
         done
-        for L in $FULLPATH_LIBS
-        do
-          scripts/lib_tar.sh $L
-        done
-        scripts/lib_tar.sh 
+        scripts/lib_tar.sh /usr/lib/x86_64-linux-gnu/libsqlite3.so.0    # Another libsqlite3.so.0 exists on the image
         git add r-lib
       env:
-        LIBS: libudunits2.so.0 libproj.so libgdal.so.32.3.6.3 libsqlite3.so.0
-        FULLPATH_LIBS: /usr/local/lib/libgeos_c.so /usr/local/share/proj/proj.db
-
-    - name: List files on image
-      run: |
-        ls -laR /usr/local/lib
-        ls -laR /usr/lib
-        ls -laR /usr/local/share
+        LIBS: libudunits2.so.0 libgeos_c.so libproj.so.22 proj.db libgdal.so.30
 
     - name: Write package descriptions
       run: |
