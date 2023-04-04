@@ -46,12 +46,18 @@ packages <- get_packages(input_packs)
 
 # Download the packages from the repository
 # message(paste("Downloading the packages and dependencies to", args[1], sep = " "))
-download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = repoUrl)
+download.packages(setdiff(packages, c("sf", "rmarkdown")), destdir = args[1], repos = repoUrl)
 
 if ("sf"  %in% packages) {
         write("has_sf=TRUE", stdout())
 } else {
         write("has_sf=FALSE", stdout())
+}
+
+if ("rmarkdown"  %in% packages) {
+        write("has_rmarkdown=TRUE", stdout())
+} else {
+        write("has_rmarkdown=FALSE", stdout())
 }
 
 # message("Completed downloading packages")

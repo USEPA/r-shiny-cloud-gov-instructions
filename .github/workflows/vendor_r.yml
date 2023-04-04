@@ -1,5 +1,11 @@
 on:
   workflow_dispatch:
+  push:
+    branches: 
+      - cloud-gov-updates
+
+permissions:
+  contents: write
 
 jobs:
   download_and_vendor_dependencies:
@@ -30,6 +36,9 @@ jobs:
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: 4.2.2
+
+    - name: Setup pandoc
+      uses: r-lib/actions/setup-pandoc@v2
 
     - name: Download dependencies
       uses: r-lib/actions/setup-r-dependencies@v2
@@ -77,16 +86,16 @@ jobs:
 
     - name: Add additional files to repo if not already there
       run: |
-        if [ ! test -f "manifest*.yml" ]; 
-          then cp scripts/include/manifest.yml .
+        if [ ! -f "manifest*.yml" ]; then
+          mv scripts/include/manifest.yml .
           git add manifest.yml
         fi
-        if [ ! test -f ".cfignore" ]; 
-          then cp scripts/include/.cfignore .
+        if [ ! -f ".cfignore" ]; then
+          mv scripts/include/.cfignore .
           git add .cfignore
         fi
-        if [ ! test -f "shiny.R" ]; 
-          then cp scripts/include/shiny.R .
+        if [ ! -f "shiny.R" ]; then
+          mv scripts/include/shiny.R .
           git add shiny.R
         fi
 
