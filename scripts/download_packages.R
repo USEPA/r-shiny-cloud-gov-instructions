@@ -46,12 +46,11 @@ packages <- get_packages(input_packs)
 
 # Download the packages from the repository
 # message(paste("Downloading the packages and dependencies to", args[1], sep = " "))
+download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = repoUrl)
 
 if ("sf"  %in% packages) {
-        download.packages(setdiff(packages, c("sf")), destdir = args[1], repos = repoUrl)
         write("has_sf=TRUE", stdout())
 } else {
-        download.packages(packages, destdir = args[1], repos = repoUrl)
         write("has_sf=FALSE", stdout())
 }
 
