@@ -21,7 +21,7 @@ packages:
   - Back in the command line, left-click to paste the passcode and login
 5. Navigate to your project's directory (in Windows, the cd command followed by the folder name will move to a folder; the tab key will complete the folder's name to save some typing) and then push your app to cloud.gov with the command:
 ```
-cf push
+cf push -s cflinuxfs4
 ```
 6. For EPA Projects, you will most likely need to use the [One EPA Template for R](https://github.com/USEPA/webcms/blob/main/utilities/r/OneEPA_template.R).
 ## Missing packages
