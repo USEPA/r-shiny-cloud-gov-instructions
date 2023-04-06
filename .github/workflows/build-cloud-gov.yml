@@ -1,11 +1,53 @@
 on:
   workflow_dispatch:
+    inputs:
+      build_deps:
+        description: 'Also build R dependencies?'
+        required: true
+        type: boolean
 
 permissions:
   contents: write
 
 jobs:
+  copy_code_to_cloud-gov:
+    runs-on: ubuntu-latest
+    name: Copy default branch code to shiny-app folder within cloud-gov branch
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        ref: cloud-gov
+
+    - name: Delete shiny-app and main-branch folders if they exist
+      run: |
+        if [ -d "shiny-app" ]; then rm -fr shiny-app; fi
+        if [ -d "main-branch" ]; then rm -fr main-branch; fi
+
+    - name: Checkout default branch to main-branch path
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        path: main-branch
+
+    - name: Copy everything but .git*, Commit, and Push
+      if: ${{ success() }}
+      run: |
+        mkdir shiny-app
+        find main-branch/* -maxdepth 0 ! -name ".git*" -print0 | xargs -0 cp -r -t shiny-app
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add shiny-app
+        git diff-index --quiet HEAD || git commit -m "Automated workflow from GitHub Actions to copy R Shiny app from default branch"
+        git push
+      env:
+        BUILD_DEPS: ${{ inputs.build_deps }}
+
   download_and_vendor_dependencies:
+    if: ${{ inputs.build_deps }}
+    needs: copy_code_to_cloud-gov
     runs-on: ubuntu-latest
     name: Compile and vendor R dependencies for cloud.gov
     defaults:
@@ -21,6 +63,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 1
+        ref: cloud-gov
 
     - name: Setup Git and remove problematic packages
       run: |
@@ -37,7 +80,7 @@ jobs:
     - name: Setup pandoc
       uses: r-lib/actions/setup-pandoc@v2
 
-    - name: Download dependencies
+    - name: Install R dependencies
       uses: r-lib/actions/setup-r-dependencies@v2
       with:
         packages: |
@@ -104,5 +147,5 @@ jobs:
       if: ${{ success() }}
       run: |
         git add vendor_r
-        git commit -m "Automated workflow from GitHub Actions to vendor R dependencies"
+        git diff-index --quiet HEAD || git commit -m "Automated workflow from GitHub Actions to vendor R dependencies"
         git push
