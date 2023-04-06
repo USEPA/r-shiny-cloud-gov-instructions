@@ -80,6 +80,8 @@ jobs:
     - name: Copy pandoc executable
       if: ${{ env.needs_pandoc == 'true' }}
       run: |
+        if [ -d "r-bin" ]; then rm -fr r-bin; fi
+        mkdir r-bin
         cp /usr/bin/pandoc r-bin
         git add r-bin
         
