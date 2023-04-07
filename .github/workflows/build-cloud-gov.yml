@@ -95,12 +95,12 @@ jobs:
     - name: Download R packages
       run: |
         if [ -d "vendor_r" ]; then rm -fr vendor_r; fi
-        if [ -f "r-github-actions-build-deps.txt" ]; then rm r-github-actions-build-deps.txt; fi
+        if [ -f "r-build-deps.txt" ]; then rm r-build-deps.txt; fi
         Rscript scripts/download_packages.R vendor_r/src/contrib ${{ env.packs }}
-        more r-github-actions-build-deps.txt
-        if [ `grep sf r-github-actions-build-deps.txt | wc -c` -gt 0 ]; then echo needs_geo=true; else echo needs_geo=false; fi >> $GITHUB_ENV
-        if [ `grep pandoc r-github-actions-build-deps.txt | wc -c` -gt 0 ]; then echo needs_pandoc=true; else echo needs_pandoc=false; fi >> $GITHUB_ENV
-        # if [ -f "r-github-actions-build-deps.txt" ]; then echo needs_libraries=true; else echo needs_libraries=false; fi >> $GITHUB_ENV
+        more r-build-deps.txt
+        if [ `grep sf r-build-deps.txt | wc -c` -gt 0 ]; then echo needs_geo=true; else echo needs_geo=false; fi >> $GITHUB_ENV
+        if [ `grep pandoc r-build-deps.txt | wc -c` -gt 0 ]; then echo needs_pandoc=true; else echo needs_pandoc=false; fi >> $GITHUB_ENV
+        # if [ -f "r-build-deps.txt" ]; then echo needs_libraries=true; else echo needs_libraries=false; fi >> $GITHUB_ENV
 
     - name: Run lib_tar.sh to extract each of the libraries needed by sf
       if: ${{ env.needs_geo == 'true' }}
