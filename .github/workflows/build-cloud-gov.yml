@@ -1,3 +1,5 @@
+name: Copy R Shiny app to cloud-gov branch and prepare for deployment
+
 on:
   workflow_dispatch:
     inputs:
