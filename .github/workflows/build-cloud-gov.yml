@@ -6,6 +6,7 @@ on:
       build_deps:
         description: 'Also build R dependencies?'
         required: true
+        default: true
         type: boolean
 
 permissions:
