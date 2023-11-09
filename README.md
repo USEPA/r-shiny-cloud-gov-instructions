@@ -34,5 +34,8 @@ cf push -s cflinuxfs4
 ```
 9. For EPA Projects, you will most likely need to use the [One EPA Template for R](https://github.com/USEPA/webcms/blob/main/utilities/r/OneEPA_template.R).
 
+# Using GitHub devcontainers
+This repository also contains a few devcontainers in the .devcontainer folder. They can be copied to your repository and used to run a GitHub devcontainer for either an R Studio Server instance or for multiple Shiny apps to support a training.
+
 # Disclaimer
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use.  EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA.  The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
