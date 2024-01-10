@@ -5,7 +5,7 @@
 
 2. Copy the .github/workflows/build-cloud-gov.yml file to your GitHub repo's default branch (with the same directories).
 
-3. Create a new "cloud-gov" branch and delete everything (except for manifest files or an r.yml if you have them) out of it then copy the scripts folder from this repo.
+3. Create a new "cloud-gov" branch and delete everything (except for manifest files or an r.yml if you have them) out of it then copy the scripts folder from this repo. (git switch --orphan cloud-gov will create a new empty branch.)
 
 4. Add an r.yml file that lists all of the packages your app needs (typically, anything called in a library command). For example, with an app that used shinyjs, ggpubr, readr, dplyr, and shinyWidgets, the r.yml would look like:
 ```
@@ -30,7 +30,7 @@ packages:
 
 8. Navigate to your project's directory (in Windows, the cd command followed by the folder name will move to a folder; the tab key will complete the folder's name to save some typing) and then push your app to cloud.gov with the command:
 ```
-cf push -s cflinuxfs4
+cf push
 ```
 9. For EPA Projects, you will most likely need to use the [One EPA Template for R](https://github.com/USEPA/webcms/blob/main/utilities/r/OneEPA_template.R).
 
