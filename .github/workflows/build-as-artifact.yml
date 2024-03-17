@@ -19,8 +19,8 @@ jobs:
     
     - name: Install geo libraries
       run: |
-        apt-get -y update
-        apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+        sudo apt-get -y update
+        sudo apt-get install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev
 
     - name: Run lib_tar.sh to extract each of the libraries needed
       run: |
