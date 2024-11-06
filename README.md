@@ -1,3 +1,5 @@
+DEPRECATED - This repository is no longer being maintained and is available for reuse.
+
 # How to deploy R Shiny apps to cloud.gov
 
 1. Install the Cloud Foundry CLI (Command Line Interface):
